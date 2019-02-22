@@ -9,7 +9,9 @@
 #import "ViewController.h"
 #import "AZCycleScrollView.h"
 #import "TestCollectionViewCell.h"
-@interface ViewController ()<AZCycleScrollViewDelegate>
+@interface ViewController ()<AZCycleScrollViewDelegate>{
+    AZCycleScrollView *_test;
+}
 
 @end
 
@@ -22,9 +24,13 @@
     self.view.backgroundColor = [UIColor whiteColor];
     AZCycleScrollView *cycle = [[AZCycleScrollView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
     cycle.AZDelegate = self;
+  
     [self.view addSubview:cycle];
+    _test = cycle;
 }
-
+-(void)viewDidLayoutSubviews{
+    [_test haha];
+}
 -(NSInteger)Az_numberOfItemInAzCycleScrollView:(AZCycleScrollView *)scrollView{
     return 3;
 }

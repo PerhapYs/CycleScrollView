@@ -12,7 +12,6 @@
 
 @protocol AZCycleScrollViewDelegate <NSObject>
 
-
 @optional
 
 - (void)Az_cylceScrollView:(AZCycleScrollView *)scrollView didSelectedItemAtIndex:(NSInteger)index;
@@ -31,6 +30,6 @@
 
 @property (nonatomic, weak) id<AZCycleScrollViewDelegate> AZDelegate;
 
-@property (nonatomic , assign) BOOL isAutoScroll;
+-(void)haha;
 
 @end

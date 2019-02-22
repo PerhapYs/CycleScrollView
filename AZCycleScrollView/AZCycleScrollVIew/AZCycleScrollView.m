@@ -32,18 +32,18 @@ static NSString * const AZCycleCollectionViewIdentifier = @"cellIdentifierForCyc
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self Az_initializeData];
         [self Az_initializeInterface];
     }
     return self;
 }
 
--(void)Az_initializeData{
-    
+-(void)haha{
+    int centerIndex = (int)_totalRowNumber * 0.5;
+    [_cycleView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:centerIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
 }
 -(void)Az_initializeInterface{
-    
-    NSInteger itemWidth = (self.bounds.size.width - 60)  / 3;
+
+    NSInteger itemWidth = self.bounds.size.width   / 2;
     AZCycleViewFlowLayout *layout = [[AZCycleViewFlowLayout alloc] init];
     layout.minimumLineSpacing = 20;
     layout.minimumInteritemSpacing = self.bounds.size.height * 0.5 + 1; // 确保只出现一行
@@ -62,16 +62,11 @@ static NSString * const AZCycleCollectionViewIdentifier = @"cellIdentifierForCyc
 #pragma mark -- AZDelegate
 -(void)setAZDelegate:(id<AZCycleScrollViewDelegate>)AZDelegate{
  
+    
     _AZDelegate = AZDelegate;
+    
     if ([self.AZDelegate respondsToSelector:@selector(Az_CustomCycleCollectionViewCellForAzCycleScrollView:)] && [self.AZDelegate respondsToSelector:@selector(Az_cycleScrollView:customCell:atIndex:)]) {
         [_cycleView registerClass:[self.AZDelegate Az_CustomCycleCollectionViewCellForAzCycleScrollView:self] forCellWithReuseIdentifier:AZCycleCollectionViewIdentifier];
-    }
-}
-
--(void)setIsAutoScroll:(BOOL)isAutoScroll{
-    _isAutoScroll = isAutoScroll;
-    if (isAutoScroll == YES) {
-        [self setupTimer];
     }
 }
 
@@ -108,8 +103,8 @@ static NSString * const AZCycleCollectionViewIdentifier = @"cellIdentifierForCyc
 - (void)scrollToIndex:(NSInteger)targetIndex
 {
     if (targetIndex >= _totalRowNumber - _dataNumber || targetIndex <= _dataNumber) {  // 如果超出范围则跳转到中间位置，保持循环
-        targetIndex = _totalRowNumber * 0.5;
-        [_cycleView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:targetIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
+        int centerIndex = (int)_totalRowNumber * 0.5;
+        [_cycleView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:centerIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
         return;
     }
     // 正常跳转
@@ -123,11 +118,10 @@ static NSString * const AZCycleCollectionViewIdentifier = @"cellIdentifierForCyc
         
         _dataNumber = dataNumber;
         _totalRowNumber = dataNumber * 100;
-       
     }
+    
     return _totalRowNumber;
 }
-
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     _lastRowIndex = indexPath.row;
@@ -143,6 +137,7 @@ static NSString * const AZCycleCollectionViewIdentifier = @"cellIdentifierForCyc
         
         return cell;
     }
+    
     return cell;
 }
 
@@ -153,16 +148,12 @@ static NSString * const AZCycleCollectionViewIdentifier = @"cellIdentifierForCyc
 #pragma mark -- scrollView delegate
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    if (self.isAutoScroll) {
        [self invalidateTimer];
-    }
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    if (self.isAutoScroll) {
         [self setupTimer];
-    }
 }
 
 //- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
